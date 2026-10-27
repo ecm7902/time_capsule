@@ -11,7 +11,6 @@ body { margin: 0; min-height: 100vh; font-family: var(--type); color: var(--ink)
 a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offset: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* Board photo. If images/board.jpg is missing, the cork texture below shows instead. */
 .bg {
   position: fixed; inset: 0; z-index: -1;
   background:
@@ -23,7 +22,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
 .board { height: 100vh; height: 100dvh; max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; padding: clamp(10px, 2vw, 24px) clamp(12px, 3vw, 40px); }
 #app { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
-/* ---------- masking tape labels ---------- */
 .tape-wrap {
   display: inline-block; text-decoration: none; color: var(--ink);
   filter: drop-shadow(1px 4px 3px rgba(25, 12, 3, .45));
@@ -35,7 +33,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
   clip-path: polygon(0 0, 100% 0, 99% 18%, 100% 38%, 98.6% 58%, 100% 78%, 99% 100%, 0 100%, 1.2% 80%, 0 60%, 1.4% 40%, 0 20%);
 }
 
-/* ---------- tacks ---------- */
 .tack {
   position: absolute; top: var(--tack-y, 6%); left: var(--tack-x, 50%); z-index: 3;
   width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; pointer-events: none;
@@ -43,7 +40,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
   box-shadow: inset -2px -3px 4px rgba(0, 0, 0, .35), 2px 5px 5px rgba(0, 0, 0, .5);
 }
 
-/* ---------- home: a collage that fills one screen ---------- */
 .scatter { position: relative; flex: 1; min-height: 0; }
 .piece {
   position: absolute; z-index: 1; display: block;
@@ -61,7 +57,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
 .home-title { position: absolute; z-index: 8; left: var(--tl); top: var(--tt); margin: 0; transform: rotate(var(--tr)); pointer-events: none; }
 .home-title .tape { font-size: var(--ts); padding: 14px 46px 10px; white-space: nowrap; }
 
-/* ---------- category page: fits one screen ---------- */
 .view-head { flex: none; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 10px; }
 .back { transform: rotate(1.5deg); }
 .back:hover { transform: rotate(0) scale(1.04); }
@@ -109,7 +104,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
 .sw-btn:hover { transform: rotate(0) scale(1.05); }
 .sw-btn[aria-current="true"] { outline: 3px solid var(--ink); outline-offset: 2px; }
 
-/* narrow or portrait screens */
 @media (max-width: 860px), (max-aspect-ratio: 1/1) {
   .view-grid { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
   .side { max-height: 32dvh; align-self: stretch; }
@@ -119,7 +113,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #1f5fbf; outline-offs
   .piece { left: var(--pl); top: var(--pt); width: min(var(--pw), 30dvh); height: auto; }
 }
 
-/* tack editor (add ?edit to the address) */
 #edit-note { position: fixed; left: 12px; bottom: 12px; z-index: 50; max-width: 340px; padding: 12px 14px; font-size: .85rem; line-height: 1.5; background: #fff; border: 2px solid var(--ink); box-shadow: 3px 4px 0 var(--ink); }
 #edit-note code { display: block; margin-top: 4px; padding: 4px 6px; background: #eee; user-select: all; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

@@ -1,4 +1,3 @@
-
 const ORIENTATION = "0deg 90deg 0deg";
 
 const CATEGORIES = [
@@ -100,20 +99,14 @@ const CATEGORIES = [
   }
 ];
 
-// The masking-tape title on the home page. Change left/top (% of the screen) to move it,
-// rotate to tilt it, size to resize it. Or open index.html?edit and drag it.
 const TITLE = { text: "Emily's Time Capsule", left: "2%", top: "2%", rotate: "-3deg", size: "clamp(1.5rem, 3.8vw, 2.6rem)" };
 
-// How scans are rotated so they stand upright, like paper pinned to a board.
-// Format: "roll pitch yaw". If a scan loads lying flat, sideways or upside down,
-// try one of these: "0deg 90deg 0deg"  "0deg -90deg 0deg"  "0deg 90deg 180deg"  "90deg 90deg 0deg"
 
 const app = document.getElementById("app");
 const FRONT = "0deg 90deg auto";   // camera: straight on, level
 const BACK = "180deg 90deg auto";
 const TACKS = ["#c0392b", "#2f6fb5", "#e0a526", "#3f8f4f", "#8a4fa8"];
-// Collage positions on the home board, as % of the screen. l/t/h = left, top, height (landscape).
-// pl/pt/pw = left, top, width (portrait phones). Pieces may overlap; later ones sit on top.
+
 const SLOTS = [
   { l: 0, t: 3, h: 60, pl: 0, pt: 0, pw: 50 }, { l: 29, t: 22, h: 62, pl: 48, pt: 6, pw: 50 },
   { l: 60, t: 0, h: 58, pl: 4, pt: 29, pw: 48 }, { l: 8, t: 44, h: 54, pl: 50, pt: 35, pw: 48 },
@@ -132,9 +125,8 @@ const jitter = (i, salt) => { const s = Math.sin((i + 1) * 12.9898 + salt * 78.2
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/* ---------------------------- home ---------------------------- */
 function renderHome() {
-  document.title = "The Ephemera Board";
+  document.title = "Emily's Time Capsule";
   const pieces = CATEGORIES.map((c, i) => {
     const first = c.items[0];
     const s = SLOTS[i % SLOTS.length];
@@ -186,9 +178,8 @@ function renderHome() {
   window.scrollTo(0, 0);
 }
 
-/* ------------------------- category view ------------------------- */
 function renderCategory(cat) {
-  document.title = `${cat.title} · The Ephemera Board`;
+  document.title = `${cat.title} · Emily's Time Capsule`;
   const switcher = cat.items.map((it, i) =>
     `<li><button class="sw-btn" data-i="${i}" style="--r:${(jitter(i, 4) * 3).toFixed(1)}deg">${esc(it.title)}</button></li>`).join("");
 
@@ -232,7 +223,6 @@ function renderCategory(cat) {
   const sideLabel = () => (twoSided() ? `Now showing: ${side}` : "");
   const defaultOrbit = () => (side === "back" && !item.back ? BACK : FRONT);
 
-  // Resolves when the next model finishes loading (or after a safety timeout).
   const nextLoad = () => new Promise((done) => {
     const fin = () => { mv.removeEventListener("load", fin); done(); };
     mv.addEventListener("load", fin);
@@ -244,7 +234,7 @@ function renderCategory(cat) {
     mv.orientation = item.orientation || ORIENTATION;
     mv.src = item.front || item.glb;
     mv.cameraOrbit = FRONT;
-    if (item.back) fetch(item.back).catch(() => {}); // warm the cache so the flip is instant
+    if (item.back) fetch(item.back).catch(() => {}); 
     $("d-text").textContent = item.description;
     flipBtn.hidden = !twoSided();
     app.querySelectorAll(".sw-btn").forEach((b) => b.setAttribute("aria-current", String(Number(b.dataset.i) === i)));
@@ -258,10 +248,10 @@ function renderCategory(cat) {
     if (busy) return;
     busy = true;
     const next = side === "front" ? "back" : "front";
-    stage.classList.add("out");            // 1. turn edge-on (invisible)
+    stage.classList.add("out");            
     await wait(290);
     side = next;
-    if (item.back) {                        // 2. swap while hidden, and wait until it has loaded
+    if (item.back) {                       
       const ready = nextLoad();
       mv.src = next === "back" ? item.back : item.front;
       mv.cameraOrbit = FRONT;
@@ -270,8 +260,7 @@ function renderCategory(cat) {
       mv.cameraOrbit = next === "back" ? BACK : FRONT;
       mv.jumpCameraToGoal();
     }
-    // $("d-side").textContent = sideLabel();
-    stage.classList.add("in");              // 3. start on the far edge, then turn to face us
+    stage.classList.add("in");             
     stage.classList.remove("out");
     void stage.offsetWidth;
     stage.classList.remove("in");
@@ -288,7 +277,6 @@ function renderCategory(cat) {
   window.scrollTo(0, 0);
 }
 
-/* ---------------------------- routing ---------------------------- */
 function route() {
   const cat = CATEGORIES.find((c) => c.id === location.hash.replace(/^#\/?/, ""));
   const note = document.getElementById("edit-note");
